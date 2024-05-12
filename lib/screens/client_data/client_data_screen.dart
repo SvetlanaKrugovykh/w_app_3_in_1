@@ -59,10 +59,12 @@ class _AuthFormState extends State<AuthForm> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 User user = User(
-                  fullName: _fullName,
+                  //fullName: _fullName,
+                  login: '', //TODO: Implement login
+                  password: '', //TODO: Implement password
                   email: _email,
                   phoneNumber: _phoneNumber,
-                  address: _address,
+                  //address: _address,
                 );
                 _submitForm(
                     user); // Pass the user object to the _submitForm method
