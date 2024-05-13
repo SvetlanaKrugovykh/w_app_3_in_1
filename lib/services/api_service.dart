@@ -2,13 +2,14 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiService {
   Future<List<dynamic>> fetchData(String endpointId) async {
-    await dotenv.load(fileName: '.env');
-    String apiKey = dotenv.get('API_KEY');
-    String url = '${apiKey}/$endpointId';
+    final String apiUrl = String.fromEnvironment('API_URL',
+        defaultValue: 'https://default-api-url.com');
+    print(apiUrl);
+
+    String url = '${apiUrl}/$endpointId';
     print(url);
 
     final response = await http.get(Uri.parse(url));
