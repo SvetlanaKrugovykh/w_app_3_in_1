@@ -20,13 +20,7 @@ class SettingsScreen extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
-          LangChoice(
-            // Передаем функцию changeLanguage
-            changeLanguage: (BuildContext context, String languageCode) {
-              // Реализация функции changeLanguage
-              // Например, вызов метода из LocalizationService для изменения языка
-            },
-          ),
+          const LangChoice(),
         ],
       ),
       floatingActionButton: FloatingActionButton(

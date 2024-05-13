@@ -1,12 +1,33 @@
 // localization_service.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../provider/locale_provider.dart';
 
-class LocalizationService with ChangeNotifier {
-  Locale _currentLocale = Locale('en');
+class LocalizationService extends ChangeNotifier {
+  Locale _currentLocale;
+  SharedPreferences _prefs;
+
+  List<Locale> supportedLocales = [Locale('en'), Locale('uk'), Locale('pl')];
+
+  LocalizationService(this._currentLocale, this._prefs);
 
   Locale get currentLocale => _currentLocale;
+
+  set currentLocale(Locale locale) {
+    if (!supportedLocales.contains(locale)) return;
+
+    _currentLocale = locale;
+    _prefs.setString('language', locale.languageCode);
+    notifyListeners();
+  }
+
+  static Future<LocalizationService> create() async {
+    var prefs = await SharedPreferences.getInstance();
+    var languageCode = prefs.getString('language') ?? 'en';
+    return LocalizationService(Locale(languageCode), prefs);
+  }
 
   static const Map<String, dynamic> localizationData = {
     "en": {
@@ -62,9 +83,9 @@ class LocalizationService with ChangeNotifier {
       BuildContext context, String languageCode) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', languageCode);
-    // runApp(MaterialApp(
-    //   home: Container(),
-    // ));
+    Provider.of<LocaleProvider>(context, listen: false).locale =
+        Locale(languageCode);
+    (context as Element).markNeedsBuild();
   }
 
   static Future<String> getLanguage() async {

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../provider/locale_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../localization/localization_service.dart';
 
 import '../posts/posts_screen.dart';
@@ -12,8 +15,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _changeLanguage(BuildContext context, String languageCode) {
-      // TODO: implement changeLanguage
+    void _changeLanguage(BuildContext context, String languageCode) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('language', languageCode);
+      var localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+      localeProvider.locale = Locale(languageCode);
     }
 
     return Scaffold(
@@ -38,8 +44,7 @@ class HomeScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        LangChoice(changeLanguage: _changeLanguage),
+                    builder: (context) => const LangChoice(),
                   ),
                 );
               },
@@ -115,7 +120,9 @@ class HomeScreen extends StatelessWidget {
   Future<String> _getLocalizedText(String key,
       {String defaultText = ''}) async {
     final localizationData = await LocalizationService.initLocalization();
-    final languageCode = await LocalizationService.getLanguage();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool hasLanguage = prefs.containsKey('language');
+    final languageCode = hasLanguage ? prefs.getString('language') : 'en';
     final languageData = localizationData[languageCode];
     final List<String> keys = key.split('.');
     if (languageData != null) {
