@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
-import '../../localization/init_localization.dart';
-import '../../localization/localization_texts.dart';
+import '../../localization/localization_service.dart';
 
 import '../posts/posts_screen.dart';
 import '../registration/registration_screen.dart';
-import '../auth/auth_screen.dart';
-import '../account/account_screen.dart';
-import '../payments/payment_screen.dart';
+import '../goods/goods_screen.dart';
 import '../settings_screen.dart';
 import '../subscreens/lang_choice.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: FutureBuilder<Map<String, dynamic>>(
-          future: initLocalization(),
+          future: LocalizationService.initLocalization(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else {
               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                 final localizationData = snapshot.data!;
-                const languageCode =
-                    'uk'; // 'en', 'uk', 'pl' TODO: get from settings
-                if (languageCode == 'uk') {
-                  return Text(localizationData['uk']['main']['title']);
-                }
+                final languageCode = 'uk'; // TODO: Get from settings
+                final title = localizationData[languageCode]['main']['title'];
+                return Text(title);
               }
               return const Text('Internet Provider App');
             }
@@ -51,19 +46,34 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       drawer: Drawer(
-        child: ListView(
-          children: [
-            ListTile(
-              title: Text(localizationData['uk']['settings']['title']),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SettingsScreen()),
+        child: FutureBuilder<Map<String, dynamic>>(
+          future: LocalizationService.initLocalization(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else {
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                final localizationData = snapshot.data!;
+                final languageCode = 'uk'; // TODO: Get from settings
+                return ListView(
+                  children: [
+                    ListTile(
+                      title: Text(
+                          localizationData[languageCode]['settings']['title']),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SettingsScreen()),
+                        );
+                      },
+                    ),
+                  ],
                 );
-              },
-            ),
-          ],
+              }
+              return const SizedBox();
+            }
+          },
         ),
       ),
       body: GridView.count(
@@ -73,32 +83,52 @@ class HomeScreen extends StatelessWidget {
         mainAxisSpacing: 20,
         crossAxisSpacing: 20,
         children: [
-          _buildMenuButton(context, Icons.person,
-              localizationData['uk']['menu']['item1'], const AuthScreen()),
           _buildMenuButton(
               context,
               Icons.person_add,
-              localizationData['uk']['menu']['item2'],
+              'item2', // Используйте ключи напрямую
               const RegisterFormPage()),
-          _buildMenuButton(context, Icons.article,
-              localizationData['uk']['menu']['item3'], PostsScreen()),
-          // Add more menu buttons as needed
+          _buildMenuButton(
+              context,
+              Icons.article,
+              'item3', // Используйте ключи напрямую
+              PostsScreen()),
+          _buildMenuButton(
+              context,
+              Icons.article,
+              'item4', // Используйте ключи напрямую
+              const GoodsScreen()),
         ],
       ),
     );
   }
 
-  Widget _buildMenuButton(
-      BuildContext context, IconData icon, String label, Widget destination) {
-    return ElevatedButton.icon(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => destination),
-        );
+  Widget _buildMenuButton(BuildContext context, IconData icon, String labelKey,
+      Widget destination) {
+    return FutureBuilder<Map<String, dynamic>>(
+      future: LocalizationService.initLocalization(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else {
+          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            final localizationData = snapshot.data!;
+            final languageCode = 'uk'; // TODO: Get from settings
+            final label = localizationData[languageCode]['menu'][labelKey];
+            return ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => destination),
+                );
+              },
+              icon: Icon(icon),
+              label: Text(label),
+            );
+          }
+          return const SizedBox();
+        }
       },
-      icon: Icon(icon),
-      label: Text(label),
     );
   }
 }

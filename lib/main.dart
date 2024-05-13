@@ -1,13 +1,11 @@
 // main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-// ignore: depend_on_referenced_packages
 import './constants/app_colors.dart';
 import './screens/home/home_screen.dart';
-import './localization/init_localization.dart';
+import 'localization/localization_service.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,15 +14,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: initLocalization(),
+      future: LocalizationService.initLocalization(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
             theme: ThemeData(
               primarySwatch: AppColors.primarySwatch,
             ),
-            home:
-                const HomeScreen(), // Измени точку входа на стартовую страницу
+            home: const HomeScreen(),
             localizationsDelegates: const [
               //AppLocalizations.delegate,
               // Другие делегаты локализации, если необходимо
@@ -39,7 +36,7 @@ class MyApp extends StatelessWidget {
             ],
           );
         } else {
-          return const CircularProgressIndicator(); // Можно добавить загрузочный экран
+          return const CircularProgressIndicator();
         }
       },
     );
