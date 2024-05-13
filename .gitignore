@@ -3,6 +3,9 @@
 /config/prod.env
 /config/.env
 
+#options
+firebase_options.*
+
 # data
 *.json
 

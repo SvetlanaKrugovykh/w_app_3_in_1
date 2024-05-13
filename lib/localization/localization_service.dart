@@ -1,6 +1,13 @@
+// localization_service.dart
 import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalizationService {
+class LocalizationService with ChangeNotifier {
+  Locale _currentLocale = Locale('en');
+
+  Locale get currentLocale => _currentLocale;
+
   static const Map<String, dynamic> localizationData = {
     "en": {
       "main": {
@@ -46,10 +53,20 @@ class LocalizationService {
   };
 
   static Future<Map<String, dynamic>> initLocalization() async {
-    // Emulate loading from an external source
     await Future.delayed(Duration(seconds: 1));
-
-    // In a real app, you might fetch localization data from an API or a file
     return localizationData;
+  }
+
+  static Future<void> _changeLanguage(
+      BuildContext context, String languageCode) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('language', languageCode);
+    runApp(MaterialApp(
+      home: Container(),
+    ));
+  }
+
+  static void changeLanguage(BuildContext context, String languageCode) {
+    _changeLanguage(context, languageCode);
   }
 }

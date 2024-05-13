@@ -12,6 +12,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _changeLanguage(BuildContext context, String languageCode) {
+      // Ваша реализация изменения языка, например, вызов метода из LocalizationService
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: FutureBuilder<Map<String, dynamic>>(
@@ -38,7 +42,10 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const LangChoice()),
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        LangChoice(changeLanguage: _changeLanguage),
+                  ),
                 );
               },
             ),
