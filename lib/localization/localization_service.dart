@@ -45,8 +45,9 @@ class LocalizationService with ChangeNotifier {
       "settings": {"title": "Settings"},
       "menu": {
         "item1": "Login",
-        "item2": "Registration",
-        "item3": "Posts",
+        "item2": "Rejestracja",
+        "item3": "Posty",
+        "item4": "Usługi",
       },
       "payment": {"title": "Płatność", "payButton": "Zapłać"}
     }
@@ -57,16 +58,17 @@ class LocalizationService with ChangeNotifier {
     return localizationData;
   }
 
-  static Future<void> _changeLanguage(
+  static Future<void> changeLanguage(
       BuildContext context, String languageCode) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', languageCode);
-    runApp(MaterialApp(
-      home: Container(),
-    ));
+    // runApp(MaterialApp(
+    //   home: Container(),
+    // ));
   }
 
-  static void changeLanguage(BuildContext context, String languageCode) {
-    _changeLanguage(context, languageCode);
+  static Future<String> getLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('language') ?? 'en';
   }
 }

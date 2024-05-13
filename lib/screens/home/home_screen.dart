@@ -13,24 +13,19 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void _changeLanguage(BuildContext context, String languageCode) {
-      // Ваша реализация изменения языка, например, вызов метода из LocalizationService
+      // TODO: implement changeLanguage
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: FutureBuilder<Map<String, dynamic>>(
-          future: LocalizationService.initLocalization(),
+        title: FutureBuilder<String>(
+          future: _getLocalizedText('main.title',
+              defaultText: 'Internet Provider App'),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return CircularProgressIndicator();
             } else {
-              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                final localizationData = snapshot.data!;
-                final languageCode = 'uk'; // TODO: Get from settings
-                final title = localizationData[languageCode]['main']['title'];
-                return Text(title);
-              }
-              return const Text('Internet Provider App');
+              return Text(snapshot.data ?? '');
             }
           },
         ),
@@ -53,34 +48,28 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       drawer: Drawer(
-        child: FutureBuilder<Map<String, dynamic>>(
-          future: LocalizationService.initLocalization(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else {
-              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                final localizationData = snapshot.data!;
-                final languageCode = 'uk'; // TODO: Get from settings
-                return ListView(
-                  children: [
-                    ListTile(
-                      title: Text(
-                          localizationData[languageCode]['settings']['title']),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SettingsScreen()),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              }
-              return const SizedBox();
-            }
-          },
+        child: ListView(
+          children: [
+            FutureBuilder<String>(
+              future: _getLocalizedText('settings.title'),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else {
+                  return ListTile(
+                    title: Text(snapshot.data ?? ''),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SettingsScreen()),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ],
         ),
       ),
       body: GridView.count(
@@ -91,20 +80,10 @@ class HomeScreen extends StatelessWidget {
         crossAxisSpacing: 20,
         children: [
           _buildMenuButton(
-              context,
-              Icons.person_add,
-              'item2', // Используйте ключи напрямую
-              const RegisterFormPage()),
+              context, Icons.person_add, 'item2', const RegisterFormPage()),
+          _buildMenuButton(context, Icons.article, 'item3', PostsScreen()),
           _buildMenuButton(
-              context,
-              Icons.article,
-              'item3', // Используйте ключи напрямую
-              PostsScreen()),
-          _buildMenuButton(
-              context,
-              Icons.article,
-              'item4', // Используйте ключи напрямую
-              const GoodsScreen()),
+              context, Icons.article, 'item4', const GoodsScreen()),
         ],
       ),
     );
@@ -112,30 +91,38 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildMenuButton(BuildContext context, IconData icon, String labelKey,
       Widget destination) {
-    return FutureBuilder<Map<String, dynamic>>(
-      future: LocalizationService.initLocalization(),
+    return FutureBuilder<String>(
+      future: _getLocalizedText('menu.$labelKey'),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
+          return CircularProgressIndicator();
         } else {
-          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            final localizationData = snapshot.data!;
-            final languageCode = 'uk'; // TODO: Get from settings
-            final label = localizationData[languageCode]['menu'][labelKey];
-            return ElevatedButton.icon(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => destination),
-                );
-              },
-              icon: Icon(icon),
-              label: Text(label),
-            );
-          }
-          return const SizedBox();
+          return ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => destination),
+              );
+            },
+            icon: Icon(icon),
+            label: Text(snapshot.data ?? ''),
+          );
         }
       },
     );
+  }
+
+  Future<String> _getLocalizedText(String key,
+      {String defaultText = ''}) async {
+    final localizationData = await LocalizationService.initLocalization();
+    final languageCode = await LocalizationService.getLanguage();
+    final languageData = localizationData[languageCode];
+    final List<String> keys = key.split('.');
+    if (languageData != null) {
+      final registrationData = languageData[keys[0]];
+      final String? registrationText = registrationData[keys[1]];
+      return registrationText ?? '???';
+    }
+    return defaultText;
   }
 }

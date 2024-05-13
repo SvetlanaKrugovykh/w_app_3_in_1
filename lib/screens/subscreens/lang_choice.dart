@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../localization/localization_service.dart';
 
 class LangChoice extends StatelessWidget {
-  final void Function(BuildContext, String)
-      changeLanguage; // Добавляем параметр changeLanguage
+  final void Function(BuildContext, String) changeLanguage;
 
   const LangChoice({Key? key, required this.changeLanguage}) : super(key: key);
 
@@ -14,7 +14,7 @@ class LangChoice extends StatelessWidget {
         if (value == 'back') {
           Navigator.pop(context);
         } else {
-          changeLanguage(context, value); // Вызываем функцию changeLanguage
+          LocalizationService.changeLanguage(context, value);
         }
       },
       itemBuilder: (BuildContext context) {
