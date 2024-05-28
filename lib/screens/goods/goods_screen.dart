@@ -2,31 +2,32 @@ import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
 
 class GoodsScreen extends StatefulWidget {
-  const GoodsScreen({super.key});
+  const GoodsScreen({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _GoodsScreenState createState() => _GoodsScreenState();
 }
 
 class _GoodsScreenState extends State<GoodsScreen> {
   List<Service> services = [];
+  final apiService = ApiService();
 
   @override
   void initState() {
     super.initState();
-    fetchServices();
+    _fetchServices();
   }
 
-  final apiService = ApiService();
-  Future<void> fetchServices() async {
+  Future<void> _fetchServices() async {
     try {
       final List<dynamic> data = await apiService.fetchData('services');
       setState(() {
-        services = data.map((item) => Service.fromJson(item)).toList();
+        services =
+            data.map((item) => Service.fromJson(item)).cast<Service>().toList();
       });
     } catch (e) {
-      throw Exception('Failed to fetch services');
+      print('Error fetching services: $e');
+      // You can handle the error here, e.g., show a snackbar
     }
   }
 
@@ -37,7 +38,7 @@ class _GoodsScreenState extends State<GoodsScreen> {
         title: Text('Services'),
       ),
       body: RefreshIndicator(
-        onRefresh: fetchServices,
+        onRefresh: _fetchServices,
         child: ListView.builder(
           itemCount: services.length,
           itemBuilder: (context, index) {

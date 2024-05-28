@@ -1,7 +1,5 @@
 # environment
-/config/dev.env
-/config/prod.env
-/config/.env
+data/
 
 #options
 firebase_options.*

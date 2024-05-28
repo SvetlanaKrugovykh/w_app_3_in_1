@@ -36,7 +36,6 @@ dependencies:
   cupertino_icons: ^1.0.6
   http: ^0.13.3
   shared_preferences: ^2.0.7
-  flutter_dotenv: ^5.0.2
   flutter_localizations:
     sdk: flutter
   #firebase_storage: ^11.7.5
@@ -92,5 +91,5 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
 assets:
-  - .env
+ - data/env_constants.json
   
