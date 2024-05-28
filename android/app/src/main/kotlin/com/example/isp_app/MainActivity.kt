@@ -1,4 +1,4 @@
-package com.example.internet_provider_app
+package com.example.isp_app
 
 import io.flutter.embedding.android.FlutterActivity
 
