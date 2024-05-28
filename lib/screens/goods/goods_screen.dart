@@ -1,3 +1,6 @@
+// goods_screen.dart
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
 
@@ -44,7 +47,7 @@ class _GoodsScreenState extends State<GoodsScreen> {
           itemBuilder: (context, index) {
             final service = services[index];
             return ListTile(
-              leading: Image.network(service.imageUrl),
+              leading: Image.memory(service.image),
               title: Text(service.name),
               subtitle: Text(service.description),
             );
@@ -56,18 +59,21 @@ class _GoodsScreenState extends State<GoodsScreen> {
 }
 
 class Service {
-  final String imageUrl;
+  final Uint8List image;
   final String name;
   final String description;
 
-  Service(
-      {required this.imageUrl, required this.name, required this.description});
+  Service({required this.image, required this.name, required this.description});
 
   factory Service.fromJson(Map<String, dynamic> json) {
+    String base64Image = json['image']['content'];
+    base64Image = base64Image
+        .replaceAll('\n', '')
+        .replaceAll('\r', '')
+        .replaceAll(' ', '');
     return Service(
-      imageUrl: json['imageUrl'],
-      name: json['name'],
-      description: json['description'],
-    );
+        image: base64Decode(base64Image),
+        name: json['name'],
+        description: json['image']['fileName']);
   }
 }

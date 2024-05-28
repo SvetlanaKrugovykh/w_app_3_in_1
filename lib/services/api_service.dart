@@ -49,9 +49,9 @@ class ApiService {
         },
       );
       print(response.statusCode);
-      print(response.body);
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
+        final Map<String, dynamic> body = json.decode(response.body);
+        final List<dynamic> data = body['ResponseArray'];
         return data;
       } else {
         throw Exception('Failed to fetch data from $url');
