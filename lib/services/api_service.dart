@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart' show rootBundle;
 import 'dart:io';
 
 class ApiService {
