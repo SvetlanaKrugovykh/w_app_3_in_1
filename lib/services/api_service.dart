@@ -1,42 +1,20 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:io';
+import '../data/env_constants.dart';
 
 class ApiService {
   Future<List<dynamic>> fetchData(String endpointId) async {
-    final filePath = 'data/env_constants.json';
-    final file = File(filePath);
+    String url = API_URL;
+    String uriAuthorization = API_AUTHORIZATION;
+    String query = QUERY;
 
-    if (await file.exists()) {
-      print('File $filePath exists');
-    } else {
-      print('File $filePath does not exist');
-      return [];
-    }
-
-    final directory = Directory('data');
-    print('Contents of directory ${directory.path}:');
-    final files = directory.listSync();
-    for (var file in files) {
-      print(file.path);
-    }
-    String jsonString = await file.readAsString();
-    Map<String, dynamic> envConstants = jsonDecode(jsonString);
-
-    final String apiUrl = envConstants['API_URL'];
-    print(apiUrl);
-
-    String url = '${apiUrl}';
-    print(url);
-
-    final body = {"Query": envConstants['QUERY']};
-    String URI_AUTHORIZATION = envConstants['URI_AUTHORIZATION'];
-    print(URI_AUTHORIZATION);
+    final body = {"Query": query};
 
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': URI_AUTHORIZATION,
+      'Authorization': uriAuthorization,
     };
+    print(url);
 
     try {
       final response = await http.post(
