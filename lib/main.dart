@@ -20,18 +20,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LocalizationService>(
-      builder: (context, localizationService, child) {
-        return MaterialApp(
-          locale: localizationService.currentLocale,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: const HomeScreen(),
-          localizationsDelegates: const [
-            // Добавьте ваши делегаты локализации
-          ],
-        );
+    return FutureBuilder<LocalizationService>(
+      future: LocalizationService.create(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return ChangeNotifierProvider<LocalizationService>.value(
+            value: snapshot.data!,
+            child: Consumer<LocalizationService>(
+              builder: (context, localizationService, child) {
+                return MaterialApp(
+                  locale: localizationService.currentLocale,
+                  theme: ThemeData(
+                    primarySwatch: Colors.blue,
+                  ),
+                  home: const HomeScreen(),
+                  localizationsDelegates: const [
+                    // Добавьте ваши делегаты локализации
+                  ],
+                );
+              },
+            ),
+          );
+        }
       },
     );
   }
