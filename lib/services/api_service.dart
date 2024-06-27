@@ -1,5 +1,5 @@
+import 'dart:io';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import '../data/env_constants.dart';
 
 class ApiService {
@@ -10,32 +10,44 @@ class ApiService {
 
     final body = {"Query": query};
 
-    final headers = {
-      'Content-Type': 'application/json',
-      'Authorization': uriAuthorization,
-    };
-    print(url);
-
     try {
-      final response = await http.post(
-        Uri.parse(url),
-        body: json.encode(body), // Encode your body to JSON
-        headers: {
-          ...headers,
-          'Content-Type': 'application/json', // Ensure the content type is JSON
-        },
-      );
-      print(response.statusCode);
+      HttpClient client = HttpClient();
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      HttpClientRequest request = await client.postUrl(Uri.parse(url));
+      request.headers.set('Content-Type', 'application/json');
+      request.headers.set('Authorization', uriAuthorization);
+      request.headers.set('Access-Control-Allow-Origin', '*');
+      request.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+      request.headers
+          .set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+      request.add(utf8.encode(json.encode(body)));
+      HttpClientResponse response = await request.close();
+      print('Status Code: ${response.statusCode}');
+
       if (response.statusCode == 200) {
-        final Map<String, dynamic> body = json.decode(response.body);
+        final responseBody = await response.transform(utf8.decoder).join();
+        final Map<String, dynamic> body = json.decode(responseBody);
         final List<dynamic> data = body['ResponseArray'];
         return data;
       } else {
-        throw Exception('Failed to fetch data from $url');
+        throw HttpException(
+            'Failed to fetch data from $url, Status code: ${response.statusCode}');
       }
     } catch (error) {
       print('Error: $error');
-      throw Exception('Failed to fetch data from $url');
+      throw HttpException(
+          'Failed to fetch data from $url, Status code: ${error.toString()}');
     }
+  }
+}
+
+class HttpOverridesBypassSSL extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

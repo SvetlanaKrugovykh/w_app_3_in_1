@@ -14,6 +14,8 @@ class GoodsScreen extends StatefulWidget {
 class _GoodsScreenState extends State<GoodsScreen> {
   List<Service> services = [];
   final apiService = ApiService();
+  bool isLoading = true;
+  String? errorMessage;
 
   @override
   void initState() {
@@ -22,15 +24,25 @@ class _GoodsScreenState extends State<GoodsScreen> {
   }
 
   Future<void> _fetchServices() async {
+    setState(() {
+      isLoading = true; // Show loading indicator
+      errorMessage = null; // Reset error message
+    });
+
     try {
       final List<dynamic> data = await apiService.fetchData('services');
       setState(() {
-        services =
-            data.map((item) => Service.fromJson(item)).cast<Service>().toList();
+        services = data.map((item) => Service.fromJson(item)).toList();
       });
     } catch (e) {
       print('Error fetching services: $e');
-      // You can handle the error here, e.g., show a snackbar
+      setState(() {
+        errorMessage = 'Failed to load services. Please try again.';
+      });
+    } finally {
+      setState(() {
+        isLoading = false; // Hide loading indicator
+      });
     }
   }
 
