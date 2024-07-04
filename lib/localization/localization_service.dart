@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../provider/locale_provider.dart';
+import 'localization_en.dart';
+import 'localization_uk.dart';
 
 class LocalizationService extends ChangeNotifier {
   Locale _currentLocale;
@@ -12,6 +14,9 @@ class LocalizationService extends ChangeNotifier {
   List<Locale> supportedLocales = [Locale('en'), Locale('uk'), Locale('pl')];
 
   LocalizationService(this._currentLocale, this._prefs);
+
+  final LocalizationEN _localizationEN = LocalizationEN();
+  final LocalizationUK _localizationUK = LocalizationUK();
 
   Locale get currentLocale => _currentLocale;
 
@@ -91,5 +96,19 @@ class LocalizationService extends ChangeNotifier {
   static Future<String> getLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('language') ?? 'en';
+  }
+
+  String getTranslatedValue(String s) {
+    Locale _currentLocale = Locale(
+        'en'); // Пример текущей локали, замените на вашу логику определения локали
+
+    switch (_currentLocale.languageCode) {
+      case 'en':
+        return _localizationEN.get(s);
+      case 'uk':
+        return _localizationUK.get(s);
+      default:
+        return 'Locale not supported';
+    }
   }
 }

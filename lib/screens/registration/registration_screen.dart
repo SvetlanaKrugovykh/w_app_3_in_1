@@ -1,9 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
+import '../../localization/localization_service.dart';
 import '../../models/user.dart';
+import '../../services/api_service.dart';
 import 'user_info_page.dart';
 
 class RegisterFormPage extends StatefulWidget {
@@ -57,10 +60,12 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    var localizationService = Provider.of<LocalizationService>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: const Text('Register Form'),
+        title: Text(localizationService.getTranslatedValue('registerTitle')),
         centerTitle: true,
       ),
       body: Form(
@@ -110,7 +115,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               decoration: InputDecoration(
                 labelText: 'Phone Number *',
                 hintText: 'Where can we reach you?',
-                helperText: 'Phone format: (XXX)XXX-XXXX',
+                helperText: 'Phone format: (XXX)XXX-XXXX or XXX XXX XXXX',
                 prefixIcon: const Icon(Icons.call),
                 suffixIcon: GestureDetector(
                   onLongPress: () {
@@ -138,7 +143,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               ],
               validator: (value) => _validatePhoneNumber(value!)
                   ? null
-                  : 'Phone number must be entered as (###)###-####',
+                  : 'Phone number must be entered as (###)###-#### or ### ### ####',
               onSaved: (value) => newUser.phoneNumber = value!,
             ),
             const SizedBox(height: 10),
@@ -259,7 +264,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   String? _validateName(String? value) {
     final _nameExp = RegExp(r'^[A-Za-z ]+$');
     if (value == null) {
-      return 'Name is reqired.';
+      return 'Name is required.';
     } else if (!_nameExp.hasMatch(value)) {
       return 'Please enter alphabetical characters.';
     } else {
@@ -268,7 +273,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   }
 
   bool _validatePhoneNumber(String input) {
-    final _phoneExp = RegExp(r'^\(\d\d\d\)\d\d\d\-\d\d\d\d$');
+    final _phoneExp = RegExp(r'^(\+)?[0-9 ]*(\([0-9 ]*)?([0-9 ]*)?([0-9]*)?$');
     return _phoneExp.hasMatch(input);
   }
 
@@ -329,7 +334,16 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                Map<String, dynamic> userData = {
+                  "name": name,
+                  "phone": _phoneController.text,
+                  "email": _emailController.text,
+                  "country": _selectedCountry,
+                  "story": _storyController.text,
+                  "password": _passController.text,
+                };
+                await ApiService().sendUserData(userData);
                 Navigator.pop(context);
                 Navigator.push(
                   context,

@@ -2,8 +2,8 @@
 
 class User {
   late String fullName;
-  late final String email;
-  late final String phoneNumber;
+  late String email;
+  late String phoneNumber;
   late String login;
   late String password;
   late String address;
