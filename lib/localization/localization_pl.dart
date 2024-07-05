@@ -13,7 +13,36 @@ class LocalizationPL {
       'item3': 'Posty',
       'item4': 'Usługi',
     },
-    'payment': {'title': 'Płatność', 'payButton': 'Zapłać'}
+    'payment': {'title': 'Płatność', 'payButton': 'Zapłać'},
+    'registration': {
+      'title': 'Formularz rejestracyjny',
+      'name': 'Imię i nazwisko *',
+      'enterFullName': 'Jak się nazywasz?',
+      'phoneNumber': 'Numer telefonu *',
+      'phoneNumberHintText': 'Jak możemy się z tobą skontaktować?',
+      'phoneNumberHelperText':
+          'Format numeru telefonu: (XXX)XXX-XXXX lub XXX XXX XXXX',
+      'phoneNumberValidationText':
+          'Numer telefonu musi być wprowadzony w formacie (###)###-#### lub ### ### ####',
+      'EmailAddress': 'Adres e-mail',
+      'inputEmailAddress': 'Wprowadź adres e-mail',
+      'lifeStory': 'Historia życia',
+      'lifeStoryHintText': 'Opowiedz nam o sobie',
+      'lifeStoryHelperText': 'Krótko, to nie jest istotne',
+      'password': 'Hasło *',
+      'passwordHintText': 'Wprowadź hasło',
+      'confirmPassword': 'Potwierdź hasło *',
+      'confirmPasswordHintText': 'Potwierdź hasło',
+      'formNotValid': 'Formularz jest nieprawidłowy! Proszę sprawdź i popraw',
+      'validationEmptyEmail': 'E-mail nie może być pusty',
+      'validationInvalidEmail': 'Nieprawidłowy adres e-mail',
+      'validationPasswordLength': 'Hasło wymaga 8 znaków',
+      'validationPasswordMatch': 'Hasła nie pasują',
+      'validationEmptyName': 'Imię jest wymagane.',
+      'validationAlphabeticalName': 'Proszę wprowadzić znaki alfabetyczne.',
+      'RegistrationSuccessful': 'Rejestracja zakończona sukcesem',
+      'FromDataVerified': 'teraz formularz rejestracyjny jest zweryfikowany',
+    },
   };
 
   dynamic get(String key) {
