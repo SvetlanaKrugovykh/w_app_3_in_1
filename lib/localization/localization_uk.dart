@@ -43,6 +43,7 @@ class LocalizationUK {
       'RegistrationSuccessful': 'Реєстрація успішна',
       'FromDataVerified': '- форму реєстрації підтверджено',
       'Verified': 'Зберегти дані',
+      'UserInfo': 'Інформація про користувача',
     },
   };
 

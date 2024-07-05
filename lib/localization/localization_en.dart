@@ -41,6 +41,7 @@ class LocalizationEN {
       'RegistrationSuccessful': 'Registration successful',
       'FromDataVerified': '- is a verified register form',
       'Verified': 'Save Data',
+      'UserInfo': 'User Info',
     },
   };
 

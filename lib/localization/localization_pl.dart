@@ -43,6 +43,7 @@ class LocalizationPL {
       'RegistrationSuccessful': 'Rejestracja zakończona sukcesem',
       'FromDataVerified': '- formularz rejestracyjny jest zweryfikowany',
       'Verified': 'Zapisz dane',
+      'UserInfo': 'Informacje o użytkowniku',
     },
   };
 

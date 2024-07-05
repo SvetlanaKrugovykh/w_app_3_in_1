@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/user.dart';
+import '../../localization/localization_service.dart';
 
 class UserInfoPage extends StatelessWidget {
   final User userInfo;
@@ -8,9 +10,11 @@ class UserInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var localizationService = Provider.of<LocalizationService>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Info'),
+        title: Text(
+            localizationService.getTranslatedValue('registration.UserInfo')),
         centerTitle: true,
       ),
       body: Card(
