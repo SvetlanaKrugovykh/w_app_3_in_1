@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import '../../localization/localization_service.dart';
 import '../../models/user.dart';
 import '../../services/api_service.dart';
+import '../../services/user_preferences.dart';
 import 'user_info_page.dart';
 
 class RegisterFormPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class RegisterFormPage extends StatefulWidget {
 }
 
 class _RegisterFormPageState extends State<RegisterFormPage> {
+  User? newUser;
   Map<String, String> validationMessages = {};
   bool _hidePass = true;
 
@@ -37,16 +39,10 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   final _phoneFocus = FocusNode();
   final _passFocus = FocusNode();
 
-  User newUser = User(
-      email: '',
-      password: '',
-      phoneNumber: '',
-      fullName: '',
-      login: '',
-      country: '',
-      story: '');
+  @override
   void initState() {
     super.initState();
+    _loadUserData();
     var localizationService =
         Provider.of<LocalizationService>(context, listen: false);
     validationMessages = {
@@ -69,6 +65,29 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
       'Verified':
           localizationService.getTranslatedValue('registration.Verified'),
     };
+  }
+
+  Future<void> _loadUserData() async {
+    final userData = await loadUserData();
+    if (userData != null) {
+      setState(() {
+        newUser = User(
+          email: userData['email'] ?? '',
+          password: userData['password'] ?? '',
+          phoneNumber: userData['phoneNumber'] ?? '',
+          fullName: userData['fullName'] ?? '',
+          login: userData['login'] ?? '',
+          country: userData['country'] ?? '',
+          story: userData['story'] ?? '',
+        );
+        _nameController.text = newUser!.fullName;
+        _phoneController.text = newUser!.phoneNumber;
+        _emailController.text = newUser!.email;
+        _storyController.text = newUser!.story;
+        _passController.text = newUser!.password;
+        _confirmPassController.text = newUser!.password;
+      });
+    }
   }
 
   @override
@@ -139,7 +158,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                 ),
               ),
               validator: _validateName,
-              onSaved: (value) => newUser.name = value!,
+              onSaved: (value) => newUser?.fullName = value ?? '',
             ),
             const SizedBox(height: 10),
             TextFormField(
@@ -184,7 +203,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                   ? null
                   : localizationService.getTranslatedValue(
                       'registration.phoneNumberValidationText'),
-              onSaved: (value) => newUser.phoneNumber = value!,
+              onSaved: (value) => newUser?.phoneNumber = value ?? '',
             ),
             const SizedBox(height: 10),
             TextFormField(
@@ -198,7 +217,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               ),
               keyboardType: TextInputType.emailAddress,
               validator: _validateEmail,
-              onSaved: (value) => newUser.email = value!,
+              onSaved: (value) => newUser?.email = value ?? '',
             ),
             const SizedBox(height: 10),
             DropdownButtonFormField(
@@ -216,7 +235,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                 print(country);
                 setState(() {
                   _selectedCountry = country as String;
-                  newUser.country = country;
+                  newUser!.country = country;
                 });
               },
               value: _selectedCountry,
@@ -240,7 +259,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               inputFormatters: [
                 LengthLimitingTextInputFormatter(100),
               ],
-              onSaved: (value) => newUser.story = value!,
+              onSaved: (value) => newUser?.story = value ?? '',
             ),
             const SizedBox(height: 10),
             TextFormField(
@@ -393,13 +412,14 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                   "story": _storyController.text,
                   "password": _passController.text,
                 };
+                await saveUserData(userData);
                 await ApiService().sendUserData(userData);
                 Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => UserInfoPage(
-                      userInfo: newUser,
+                      userInfo: newUser!,
                     ),
                   ),
                 );
