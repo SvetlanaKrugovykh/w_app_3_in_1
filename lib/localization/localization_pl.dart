@@ -1,19 +1,19 @@
-// localization_en.dart
-class LocalizationEN {
+// localization_pl.dart
+class LocalizationPL {
   static final Map<String, dynamic> _localizedValues = {
     'registerTitle': 'Register Form',
     'main': {
-      'title': 'Internet Provider App',
-      'enterFullName': 'Enter your full name'
+      'title': 'Aplikacja dostawcy Internetu',
+      'enterFullName': 'Wprowadź swoje pełne imię'
     },
     'settings': {'title': 'Settings'},
     'menu': {
       'item1': 'Login',
-      'item2': 'Registration',
-      'item3': 'Posts',
-      'item4': 'Services',
+      'item2': 'Rejestracja',
+      'item3': 'Posty',
+      'item4': 'Usługi',
     },
-    'payment': {'title': 'Payment', 'payButton': 'Pay'}
+    'payment': {'title': 'Płatność', 'payButton': 'Zapłać'}
   };
 
   dynamic get(String key) {

@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../provider/locale_provider.dart';
 import 'localization_en.dart';
 import 'localization_uk.dart';
+import 'localization_pl.dart';
 
 class LocalizationService extends ChangeNotifier {
   Locale _currentLocale;
@@ -17,6 +18,7 @@ class LocalizationService extends ChangeNotifier {
 
   final LocalizationEN _localizationEN = LocalizationEN();
   final LocalizationUK _localizationUK = LocalizationUK();
+  final LocalizationPL _localizationPL = LocalizationPL();
 
   Locale get currentLocale => _currentLocale;
 
@@ -34,56 +36,6 @@ class LocalizationService extends ChangeNotifier {
     return LocalizationService(Locale(languageCode), prefs);
   }
 
-  static const Map<String, dynamic> localizationData = {
-    "en": {
-      "main": {
-        "title": "Internet Provider App",
-        "enterFullName": "Enter your full name"
-      },
-      "settings": {"title": "Settings"},
-      "menu": {
-        "item1": "Login",
-        "item2": "Registration",
-        "item3": "Posts",
-        "item4": "Services",
-      },
-      "payment": {"title": "Payment", "payButton": "Pay"}
-    },
-    "uk": {
-      "main": {
-        "title": "Додаток інтернет-провайдера",
-        "enterFullName": "Введіть ваше повне ім'я"
-      },
-      "settings": {"title": "Настроювання"},
-      "menu": {
-        "item1": "Вхід",
-        "item2": "Реєстрація",
-        "item3": "Пости",
-        "item4": "Послуги",
-      },
-      "payment": {"title": "Оплата", "payButton": "Оплатити"}
-    },
-    "pl": {
-      "main": {
-        "title": "Aplikacja dostawcy Internetu",
-        "enterFullName": "Wprowadź swoje pełne imię"
-      },
-      "settings": {"title": "Settings"},
-      "menu": {
-        "item1": "Login",
-        "item2": "Rejestracja",
-        "item3": "Posty",
-        "item4": "Usługi",
-      },
-      "payment": {"title": "Płatność", "payButton": "Zapłać"}
-    }
-  };
-
-  static Future<Map<String, dynamic>> initLocalization() async {
-    await Future.delayed(Duration(seconds: 1));
-    return localizationData;
-  }
-
   static Future<void> changeLanguage(
       BuildContext context, String languageCode) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -99,14 +51,13 @@ class LocalizationService extends ChangeNotifier {
   }
 
   String getTranslatedValue(String s) {
-    Locale _currentLocale = Locale(
-        'en'); // Пример текущей локали, замените на вашу логику определения локали
-
     switch (_currentLocale.languageCode) {
       case 'en':
         return _localizationEN.get(s);
       case 'uk':
         return _localizationUK.get(s);
+      case 'pl':
+        return _localizationPL.get(s);
       default:
         return 'Locale not supported';
     }
