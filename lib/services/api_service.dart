@@ -44,13 +44,19 @@ class ApiService {
 
   Future<void> sendUserData(Map<String, dynamic> userData) async {
     String url = API_URL;
+    String uriAuthorization = API_AUTHORIZATION;
+
     try {
       HttpClient client = HttpClient();
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
       HttpClientRequest request = await client.postUrl(Uri.parse(url));
       request.headers.set('Content-Type', 'application/json');
-      // Добавьте необходимые заголовки, если они есть
+      request.headers.set('Authorization', uriAuthorization);
+      request.headers.set('Access-Control-Allow-Origin', '*');
+      request.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+      request.headers
+          .set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
       request.add(utf8.encode(json.encode(userData)));
       HttpClientResponse response = await request.close();
       if (response.statusCode == 200) {
