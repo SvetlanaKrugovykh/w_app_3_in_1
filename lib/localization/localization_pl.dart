@@ -42,6 +42,7 @@ class LocalizationPL {
       'validationAlphabeticalName': 'Proszę wprowadzić znaki alfabetyczne.',
       'RegistrationSuccessful': 'Rejestracja zakończona sukcesem',
       'FromDataVerified': 'teraz formularz rejestracyjny jest zweryfikowany',
+      'Verified': 'Zapisz dane',
     },
   };
 

@@ -21,7 +21,7 @@ class LocalizationUK {
       'phoneNumber': 'Телефон *',
       'phoneNumberHintText': 'Як ми можемо з вами зв’язатися?',
       'phoneNumberHelperText':
-          'Формат телефону: (XXX)XXX-XXXX або XXX XXX XXXX',
+          'Формат номеру телефону: (XXX)XXX-XXXX або XXX XXX XXXX',
       'phoneNumberValidationText':
           'Номер телефону повинен бути введений у форматі (###)###-#### або ### ### ####',
       'EmailAddress': 'Адреса електронної пошти',
@@ -42,6 +42,7 @@ class LocalizationUK {
       'validationAlphabeticalName': 'Будь ласка, введіть буквені символи.',
       'RegistrationSuccessful': 'Реєстрація успішна',
       'FromDataVerified': 'тепер форму реєстрації підтверджено',
+      'Verified': 'Зберегти дані',
     },
   };
 

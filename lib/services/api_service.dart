@@ -43,8 +43,7 @@ class ApiService {
   }
 
   Future<void> sendUserData(Map<String, dynamic> userData) async {
-    String url =
-        API_URL; // Убедитесь, что это URL для отправки данных пользователя
+    String url = API_URL;
     try {
       HttpClient client = HttpClient();
       client.badCertificateCallback =

@@ -59,6 +59,8 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
           .getTranslatedValue('registration.RegistrationSuccessful'),
       'FromDataVerified': localizationService
           .getTranslatedValue('registration.FromDataVerified'),
+      'Verified':
+          localizationService.getTranslatedValue('registration.Verified'),
     };
   }
 
@@ -303,7 +305,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   }
 
   String? _validateName(String? value) {
-    final _nameExp = RegExp(r'^[A-Za-z ]+$');
+    final _nameExp = RegExp(r'^[A-Za-zА-Яа-яЁёІіЇїҐґЄєĄąĆćĘęŁłŃńÓóŚśŹźŻż ]+$');
     if (value == null) {
       return validationMessages['validationEmptyName'];
     } else if (!_nameExp.hasMatch(value)) {
@@ -395,8 +397,8 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                   ),
                 );
               },
-              child: const Text(
-                'Verified',
+              child: Text(
+                validationMessages['Verified']!,
                 style: TextStyle(
                   color: Colors.green,
                   fontSize: 18.0,

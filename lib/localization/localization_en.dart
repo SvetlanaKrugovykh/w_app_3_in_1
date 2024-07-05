@@ -40,6 +40,7 @@ class LocalizationEN {
       'validationAlphabeticalName': 'Please enter alphabetical characters.',
       'RegistrationSuccessful': 'Registration successful',
       'FromDataVerified': 'is now a verified register form',
+      'Verified': 'Save Data',
     },
   };
 
