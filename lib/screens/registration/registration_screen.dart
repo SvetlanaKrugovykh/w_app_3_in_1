@@ -17,6 +17,7 @@ class RegisterFormPage extends StatefulWidget {
 }
 
 class _RegisterFormPageState extends State<RegisterFormPage> {
+  Map<String, String> validationMessages = {};
   bool _hidePass = true;
 
   final _formKey = GlobalKey<FormState>();
@@ -37,6 +38,29 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   final _passFocus = FocusNode();
 
   User newUser = User(login: '', password: '', phoneNumber: '', email: '');
+  void initState() {
+    super.initState();
+    var localizationService =
+        Provider.of<LocalizationService>(context, listen: false);
+    validationMessages = {
+      'validationEmptyEmail': localizationService
+          .getTranslatedValue('registration.validationEmptyEmail'),
+      'validationInvalidEmail': localizationService
+          .getTranslatedValue('registration.validationInvalidEmail'),
+      'validationPasswordLength': localizationService
+          .getTranslatedValue('registration.validationPasswordLength'),
+      'validationPasswordMatch': localizationService
+          .getTranslatedValue('registration.validationPasswordMatch'),
+      'validationEmptyName': localizationService
+          .getTranslatedValue('registration.validationEmptyName'),
+      'validationAlphabeticalName': localizationService
+          .getTranslatedValue('registration.validationAlphabeticalName'),
+      'RegistrationSuccessful': localizationService
+          .getTranslatedValue('registration.RegistrationSuccessful'),
+      'FromDataVerified': localizationService
+          .getTranslatedValue('registration.FromDataVerified'),
+    };
+  }
 
   @override
   void dispose() {
@@ -65,7 +89,8 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(localizationService.getTranslatedValue('registerTitle')),
+        title:
+            Text(localizationService.getTranslatedValue('registration.title')),
         centerTitle: true,
       ),
       body: Form(
@@ -81,8 +106,10 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               },
               controller: _nameController,
               decoration: InputDecoration(
-                labelText: 'Full Name *',
-                hintText: 'What do people call you?',
+                labelText:
+                    localizationService.getTranslatedValue('registration.name'),
+                hintText: localizationService
+                    .getTranslatedValue('main.enterFullName'),
                 prefixIcon: const Icon(Icons.person),
                 suffixIcon: GestureDetector(
                   onTap: () {
@@ -113,9 +140,12 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               },
               controller: _phoneController,
               decoration: InputDecoration(
-                labelText: 'Phone Number *',
-                hintText: 'Where can we reach you?',
-                helperText: 'Phone format: (XXX)XXX-XXXX or XXX XXX XXXX',
+                labelText: localizationService
+                    .getTranslatedValue('registration.phoneNumber'),
+                hintText: localizationService
+                    .getTranslatedValue('registration.phoneNumberHintText'),
+                helperText: localizationService
+                    .getTranslatedValue('registration.phoneNumberHelperText'),
                 prefixIcon: const Icon(Icons.call),
                 suffixIcon: GestureDetector(
                   onLongPress: () {
@@ -143,19 +173,22 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               ],
               validator: (value) => _validatePhoneNumber(value!)
                   ? null
-                  : 'Phone number must be entered as (###)###-#### or ### ### ####',
+                  : localizationService.getTranslatedValue(
+                      'registration.phoneNumberValidationText'),
               onSaved: (value) => newUser.phoneNumber = value!,
             ),
             const SizedBox(height: 10),
             TextFormField(
               controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email Address',
-                hintText: 'Enater a email address',
+              decoration: InputDecoration(
+                labelText: localizationService
+                    .getTranslatedValue('registration.EmailAddress'),
+                hintText: localizationService
+                    .getTranslatedValue('registration.inputEmailAddress'),
                 icon: Icon(Icons.mail),
               ),
               keyboardType: TextInputType.emailAddress,
-              // validator: _validateEmail,
+              validator: _validateEmail,
               onSaved: (value) => newUser.email = value!,
             ),
             const SizedBox(height: 10),
@@ -185,10 +218,13 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
             const SizedBox(height: 20),
             TextFormField(
               controller: _storyController,
-              decoration: const InputDecoration(
-                labelText: 'Life Story',
-                hintText: 'Tell us about your self',
-                helperText: 'Keep it short, this is just a demo',
+              decoration: InputDecoration(
+                labelText: localizationService
+                    .getTranslatedValue('registration.lifeStory'),
+                hintText: localizationService
+                    .getTranslatedValue('registration.lifeStoryHintText'),
+                helperText: localizationService
+                    .getTranslatedValue('registration.lifeStoryHelperText'),
                 border: OutlineInputBorder(),
               ),
               maxLines: 3,
@@ -204,8 +240,10 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               obscureText: _hidePass,
               maxLength: 8,
               decoration: InputDecoration(
-                labelText: 'Password *',
-                hintText: 'Enter the password',
+                labelText: localizationService
+                    .getTranslatedValue('registration.password'),
+                hintText: localizationService
+                    .getTranslatedValue('registration.passwordHintText'),
                 suffixIcon: IconButton(
                   icon:
                       Icon(_hidePass ? Icons.visibility : Icons.visibility_off),
@@ -224,9 +262,11 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               controller: _confirmPassController,
               obscureText: _hidePass,
               maxLength: 8,
-              decoration: const InputDecoration(
-                labelText: 'Confirm Password *',
-                hintText: 'Confirm the password',
+              decoration: InputDecoration(
+                labelText: localizationService
+                    .getTranslatedValue('registration.confirmPassword'),
+                hintText: localizationService
+                    .getTranslatedValue('registration.confirmPasswordHintText'),
                 icon: Icon(Icons.border_color),
               ),
               validator: _validatePassword,
@@ -234,7 +274,8 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
             const SizedBox(height: 15),
             ElevatedButton(
               child: const Text('Submit Form'),
-              onPressed: _submitForm,
+              onPressed: () => _submitForm(localizationService
+                  .getTranslatedValue('registration.formNotValid')),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
                 textStyle: const TextStyle(color: Colors.white),
@@ -247,7 +288,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm(msgFormNotValid) {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       _showDialog(name: _nameController.text);
@@ -257,16 +298,16 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
       log('Country: $_selectedCountry');
       log('Story: ${_storyController.text}');
     } else {
-      _showMessage(message: 'Form is not valid! Please review and correct');
+      _showMessage(message: msgFormNotValid);
     }
   }
 
   String? _validateName(String? value) {
     final _nameExp = RegExp(r'^[A-Za-z ]+$');
     if (value == null) {
-      return 'Name is required.';
+      return validationMessages['validationEmptyName'];
     } else if (!_nameExp.hasMatch(value)) {
-      return 'Please enter alphabetical characters.';
+      return validationMessages['validationAlphabeticalName'];
     } else {
       return null;
     }
@@ -279,9 +320,9 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
 
   String? _validateEmail(String? value) {
     if (value == null) {
-      return 'Email cannot be empty';
+      return validationMessages['validationEmptyEmail'];
     } else if (!_emailController.text.contains('@')) {
-      return 'Invalid email address';
+      return validationMessages['validationInvalidEmail'];
     } else {
       return null;
     }
@@ -289,9 +330,9 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
 
   String? _validatePassword(String? value) {
     if (_passController.text.length != 8) {
-      return '8 character required for password';
+      return validationMessages['validationPasswordLength'];
     } else if (_confirmPassController.text != _passController.text) {
-      return 'Password does not match';
+      return validationMessages['validationPasswordMatch'];
     } else {
       return null;
     }
@@ -319,14 +360,14 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text(
-            'Registration successful',
+          title: Text(
+            validationMessages['RegistrationSuccessful']!,
             style: TextStyle(
               color: Colors.green,
             ),
           ),
           content: Text(
-            '$name is now a verified register form',
+            "$name ${validationMessages['FromDataVerified']}",
             style: const TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 18.0,

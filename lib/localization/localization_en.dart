@@ -1,7 +1,6 @@
 // localization_en.dart
 class LocalizationEN {
   static final Map<String, dynamic> _localizedValues = {
-    'registerTitle': 'Register Form',
     'main': {
       'title': 'Internet Provider App',
       'enterFullName': 'Enter your full name'
@@ -13,7 +12,35 @@ class LocalizationEN {
       'item3': 'Posts',
       'item4': 'Services',
     },
-    'payment': {'title': 'Payment', 'payButton': 'Pay'}
+    'payment': {'title': 'Payment', 'payButton': 'Pay'},
+    'registration': {
+      'title': 'Register Form',
+      'name': 'Full Name *',
+      'enterFullName': 'What do people call you?',
+      'phoneNumber': 'Phone Number *',
+      'phoneNumberHintText': 'Where can we reach you?',
+      'phoneNumberHelperText': 'Phone format: (XXX)XXX-XXXX or XXX XXX XXXX',
+      'phoneNumberValidationText':
+          'Phone number must be entered as (###)###-#### or ### ### ####',
+      'EmailAddress': 'Email Address',
+      'inputEmailAddress': 'Enter a email address',
+      'lifeStory': 'Life Story',
+      'lifeStoryHintText': 'Tell us about your self',
+      'lifeStoryHelperText': 'Keep it short, this is just a demo',
+      'password': 'Password *',
+      'passwordHintText': 'Enter the password',
+      'confirmPassword': 'Confirm Password *',
+      'confirmPasswordHintText': 'Confirm the password',
+      'formNotValid': 'Form is not valid! Please review and correct',
+      'validationEmptyEmail': 'Email cannot be empty',
+      'validationInvalidEmail': 'Invalid email address',
+      'validationPasswordLength': '8 character required for password',
+      'validationPasswordMatch': 'Password does not match',
+      'validationEmptyName': 'Name is required.',
+      'validationAlphabeticalName': 'Please enter alphabetical characters.',
+      'RegistrationSuccessful': 'Registration successful',
+      'FromDataVerified': 'is now a verified register form'
+    },
   };
 
   dynamic get(String key) {
