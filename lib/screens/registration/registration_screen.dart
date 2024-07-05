@@ -37,7 +37,14 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   final _phoneFocus = FocusNode();
   final _passFocus = FocusNode();
 
-  User newUser = User(login: '', password: '', phoneNumber: '', email: '');
+  User newUser = User(
+      email: '',
+      password: '',
+      phoneNumber: '',
+      fullName: '',
+      login: '',
+      country: '',
+      story: '');
   void initState() {
     super.initState();
     var localizationService =
@@ -379,9 +386,9 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
             TextButton(
               onPressed: () async {
                 Map<String, dynamic> userData = {
-                  "name": name,
-                  "phone": _phoneController.text,
+                  "fullName": name,
                   "email": _emailController.text,
+                  "phoneNumber": _phoneController.text,
                   "country": _selectedCountry,
                   "story": _storyController.text,
                   "password": _passController.text,

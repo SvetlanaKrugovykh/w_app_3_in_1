@@ -25,14 +25,14 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
-  late String _fullName;
-  late String _email;
-  late String _phoneNumber;
-  late String _address;
+  // late String _fullName;
+  // late String _email;
+  // late String _phoneNumber;
+  // late String _address;
 
   void _submitForm(User user) {
     // TODO: Implement your logic to handle the user object
-    print('User created: ${user.fullName}');
+    // print('User created: ${user.fullName}');
   }
 
   @override
@@ -51,23 +51,21 @@ class _AuthFormState extends State<AuthForm> {
               return null;
             },
             onSaved: (value) {
-              _fullName = value!;
+              // _fullName = value!;
             },
           ),
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                User user = User(
-                  //fullName: _fullName,
-                  login: '', //TODO: Implement login
-                  password: '', //TODO: Implement password
-                  email: _email,
-                  phoneNumber: _phoneNumber,
-                  //address: _address,
-                );
-                _submitForm(
-                    user); // Pass the user object to the _submitForm method
+                // User user = User(
+                //   fullName: _fullName,
+                //   login: '', //TODO: Implement login
+                //   password: '', //TODO: Implement password
+                //   email: _email,
+                //   phoneNumber: _phoneNumber,
+                //   //address: _address,
+                // );
               }
             },
             child: const Text('Отправить'),

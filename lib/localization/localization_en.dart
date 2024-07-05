@@ -39,7 +39,7 @@ class LocalizationEN {
       'validationEmptyName': 'Name is required.',
       'validationAlphabeticalName': 'Please enter alphabetical characters.',
       'RegistrationSuccessful': 'Registration successful',
-      'FromDataVerified': 'is now a verified register form',
+      'FromDataVerified': '- is a verified register form',
       'Verified': 'Save Data',
     },
   };

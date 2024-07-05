@@ -41,7 +41,7 @@ class LocalizationPL {
       'validationEmptyName': 'Imię jest wymagane.',
       'validationAlphabeticalName': 'Proszę wprowadzić znaki alfabetyczne.',
       'RegistrationSuccessful': 'Rejestracja zakończona sukcesem',
-      'FromDataVerified': 'teraz formularz rejestracyjny jest zweryfikowany',
+      'FromDataVerified': '- formularz rejestracyjny jest zweryfikowany',
       'Verified': 'Zapisz dane',
     },
   };

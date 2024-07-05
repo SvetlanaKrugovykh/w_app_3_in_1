@@ -41,7 +41,7 @@ class LocalizationUK {
       'validationEmptyName': 'Ім’я обов’язкове.',
       'validationAlphabeticalName': 'Будь ласка, введіть буквені символи.',
       'RegistrationSuccessful': 'Реєстрація успішна',
-      'FromDataVerified': 'тепер форму реєстрації підтверджено',
+      'FromDataVerified': '- форму реєстрації підтверджено',
       'Verified': 'Зберегти дані',
     },
   };
