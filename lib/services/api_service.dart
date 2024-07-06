@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:logging/logging.dart';
 import '../data/env_constants.dart';
+
+final Logger logger = Logger('apiServiceLogger');
 
 class ApiService {
   Future<List<dynamic>> fetchData(String endpointId) async {
+    Logger.root.level = Level.ALL;
     String url = API_URL;
     String uriAuthorization = API_AUTHORIZATION;
     String query = QUERY;
@@ -24,7 +28,7 @@ class ApiService {
 
       request.add(utf8.encode(json.encode(body)));
       HttpClientResponse response = await request.close();
-      print('Status Code: ${response.statusCode}');
+      logger.warning('Status Code: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final responseBody = await response.transform(utf8.decoder).join();
@@ -36,13 +40,14 @@ class ApiService {
             'Failed to fetch data from $url, Status code: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error: $error');
+      logger.warning('Error: $error');
       throw HttpException(
           'Failed to fetch data from $url, Status code: ${error.toString()}');
     }
   }
 
   Future<void> sendUserData(Map<String, dynamic> userData) async {
+    Logger.root.level = Level.ALL;
     String url = API_URL;
     String uriAuthorization = API_AUTHORIZATION;
 
@@ -60,12 +65,13 @@ class ApiService {
       request.add(utf8.encode(json.encode(userData)));
       HttpClientResponse response = await request.close();
       if (response.statusCode == 200) {
-        print('User data sent successfully');
+        logger.warning('User data sent successfully');
       } else {
-        print('Failed to send user data, Status code: ${response.statusCode}');
+        logger.warning(
+            'Failed to send user data, Status code: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error sending user data: $error');
+      logger.warning('Error sending user data: $error');
     }
   }
 }
