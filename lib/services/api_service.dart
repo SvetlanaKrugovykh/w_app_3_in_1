@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'dart:developer' as developer;
 import 'package:logging/logging.dart';
 import '../data/env_constants.dart';
 
@@ -79,8 +80,13 @@ class ApiService {
 class HttpOverridesBypassSSL extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+    final client = super.createHttpClient(context);
+    client.badCertificateCallback =
+        (X509Certificate cert, String host, int port) {
+      developer.log('Bypassing SSL certificate for $host:$port',
+          name: 'HttpOverridesBypassSSL');
+      return true;
+    };
+    return client;
   }
 }
