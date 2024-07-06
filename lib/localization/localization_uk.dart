@@ -12,7 +12,14 @@ class LocalizationUK {
       'item2': 'Реєстрація',
       'item3': 'Пости',
       'item4': 'Послуги',
+      'item5': 'Зустрічі',
     },
+    'posts': {
+      'title': 'Пости користувача',
+      'newPost': 'Новий пост',
+      'postButton': 'Пост'
+    },
+    'services': {'title': 'Послуги', 'serviceButton': 'Послуга'},
     'payment': {'title': 'Оплата', 'payButton': 'Pay'},
     'registration': {
       'title': 'Реєстраційна форма',
@@ -44,6 +51,18 @@ class LocalizationUK {
       'FromDataVerified': '- форму реєстрації підтверджено',
       'Verified': 'Зберегти дані',
       'UserInfo': 'Інформація про користувача',
+    },
+    'appointments': {
+      'title': 'Реєстрація зустрічі',
+      'selectInterval': 'Виберіть інтервал дат',
+      'selectStartDate': 'Виберіть початкову дату',
+      'selectEndDate': 'Виберіть кінцеву дату',
+      'selectTimeInterval': 'Виберіть інтервал часу',
+      'selectStartTime': 'Виберіть час початку',
+      'selectEndTime': 'Виберіть час завершення',
+      'selectedDateTime': 'Обрана дата та час:',
+      'selectedTimeInterval': 'Обраний інтервал часу',
+      'notSelected': 'Не вибрано',
     },
   };
 

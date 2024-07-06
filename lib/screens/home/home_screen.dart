@@ -5,6 +5,7 @@ import '../../localization/localization_service.dart';
 import '../posts/posts_screen.dart';
 import '../registration/registration_screen.dart';
 import '../goods/goods_screen.dart';
+import '../appointments/appointments_screen.dart';
 import '../settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -65,6 +66,8 @@ class HomeScreen extends StatelessWidget {
           _buildMenuButton(context, Icons.article, 'item3', PostsScreen()),
           _buildMenuButton(
               context, Icons.article, 'item4', const GoodsScreen()),
+          _buildMenuButton(context, Icons.calendar_month, 'item5',
+              const AppointmentsScreen()),
         ],
       ),
     );

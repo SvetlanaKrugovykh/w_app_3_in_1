@@ -11,7 +11,14 @@ class LocalizationEN {
       'item2': 'Registration',
       'item3': 'Posts',
       'item4': 'Services',
+      'item5': 'Appointments',
     },
+    'posts': {
+      'title': 'User Posts',
+      'newPost': 'New Post',
+      'postButton': 'Post'
+    },
+    'services': {'title': 'Services', 'serviceButton': 'Service'},
     'payment': {'title': 'Payment', 'payButton': 'Pay'},
     'registration': {
       'title': 'Register Form',
@@ -42,6 +49,18 @@ class LocalizationEN {
       'FromDataVerified': '- is a verified register form',
       'Verified': 'Save Data',
       'UserInfo': 'User Info',
+    },
+    'appointments': {
+      'title': 'Appointment registration',
+      'selectInterval': 'Select date interval',
+      'selectStartDate': 'Select start date',
+      'selectEndDate': 'Select end date',
+      'selectTimeInterval': 'Select time interval',
+      'selectStartTime': 'Select start time',
+      'selectEndTime': 'Select end time',
+      'selectedDateTime': 'Selected date and time:',
+      'selectedTimeInterval': 'Selected time interval:',
+      'notSelected': 'Not selected',
     },
   };
 

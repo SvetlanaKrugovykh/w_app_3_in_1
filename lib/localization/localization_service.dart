@@ -11,6 +11,7 @@ import 'localization_pl.dart';
 class LocalizationService extends ChangeNotifier {
   Locale _currentLocale;
   SharedPreferences _prefs;
+  String get currentLanguage => _currentLocale.languageCode;
 
   List<Locale> supportedLocales = [Locale('en'), Locale('uk'), Locale('pl')];
 
@@ -48,6 +49,14 @@ class LocalizationService extends ChangeNotifier {
   static Future<String> getLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('language') ?? 'en';
+  }
+
+  void updateLocale(Locale locale) {
+    if (!supportedLocales.contains(locale)) return;
+
+    _currentLocale = locale;
+    _prefs.setString('language', locale.languageCode);
+    notifyListeners();
   }
 
   String getTranslatedValue(String s) {

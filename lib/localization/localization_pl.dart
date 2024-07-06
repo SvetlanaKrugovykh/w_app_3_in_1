@@ -12,7 +12,14 @@ class LocalizationPL {
       'item2': 'Rejestracja',
       'item3': 'Posty',
       'item4': 'Usługi',
+      'item5': 'Spotkania',
     },
+    'posts': {
+      'title': 'Posty użytkownika',
+      'newPost': 'Nowy post',
+      'postButton': 'Post'
+    },
+    'services': {'title': 'Usługy', 'serviceButton': 'Usługa'},
     'payment': {'title': 'Płatność', 'payButton': 'Zapłać'},
     'registration': {
       'title': 'Formularz rejestracyjny',
@@ -44,6 +51,18 @@ class LocalizationPL {
       'FromDataVerified': '- formularz rejestracyjny jest zweryfikowany',
       'Verified': 'Zapisz dane',
       'UserInfo': 'Informacje o użytkowniku',
+    },
+    'appointments': {
+      'title': 'Rejestracja spotkania',
+      'selectInterval': 'Wybierz przedział czasu',
+      'selectStartDate': 'Wybierz datę rozpoczęcia',
+      'selectEndDate': 'Wybierz datę zakończenia',
+      'selectTimeInterval': 'Wybierz przedział czasu',
+      'selectStartTime': 'Wybierz godzinę rozpoczęcia',
+      'selectEndTime': 'Wybierz godzinę zakończenia',
+      'selectedDateTime': 'Wybrana data i godzina to',
+      'selectedTimeInterval': 'Wybrany przedział czasu to',
+      'notSelected': 'Nie wybrano',
     },
   };
 

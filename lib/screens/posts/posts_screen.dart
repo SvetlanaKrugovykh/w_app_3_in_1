@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../localization/localization_service.dart';
+import '../../services/user_preferences.dart';
 
 class PostsScreen extends StatefulWidget {
   @override
@@ -6,13 +9,27 @@ class PostsScreen extends StatefulWidget {
 }
 
 class _PostsScreenState extends State<PostsScreen> {
-  List<String> posts = []; // List to store user posts
+  List<String> posts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserPosts();
+  }
+
+  void loadUserPosts() async {
+    var loadedPosts = await getUserPosts();
+    setState(() {
+      posts = loadedPosts;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    var localizationService = Provider.of<LocalizationService>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Posts'),
+        title: Text(localizationService.getTranslatedValue('posts.title')),
       ),
       body: Column(
         children: [
@@ -30,12 +47,15 @@ class _PostsScreenState extends State<PostsScreen> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               decoration: InputDecoration(
-                labelText: 'New Post',
+                labelText:
+                    localizationService.getTranslatedValue('posts.newPost'),
               ),
-              onSubmitted: (value) {
+              onSubmitted: (value) async {
                 setState(() {
                   posts.add(value);
                 });
+                var userEmail = await saveUserPost(value);
+                print(userEmail);
               },
             ),
           ),

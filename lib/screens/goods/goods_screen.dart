@@ -2,7 +2,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../services/api_service.dart';
+import '../../localization/localization_service.dart';
 
 class GoodsScreen extends StatefulWidget {
   const GoodsScreen({Key? key}) : super(key: key);
@@ -48,9 +50,10 @@ class _GoodsScreenState extends State<GoodsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var localizationService = Provider.of<LocalizationService>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Services'),
+        title: Text(localizationService.getTranslatedValue('services.title')),
       ),
       body: RefreshIndicator(
         onRefresh: _fetchServices,
