@@ -1,6 +1,5 @@
-import 'dart:io';
 import 'dart:convert';
-import 'dart:developer' as developer;
+import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import '../data/env_constants.dart';
 
@@ -16,34 +15,29 @@ class ApiService {
     final body = {"Query": query};
 
     try {
-      HttpClient client = HttpClient();
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      HttpClientRequest request = await client.postUrl(Uri.parse(url));
-      request.headers.set('Content-Type', 'application/json');
-      request.headers.set('Authorization', uriAuthorization);
-      request.headers.set('Access-Control-Allow-Origin', '*');
-      request.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-      request.headers
-          .set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': uriAuthorization,
+        },
+        body: jsonEncode(body),
+      );
 
-      request.add(utf8.encode(json.encode(body)));
-      HttpClientResponse response = await request.close();
       logger.warning('Status Code: ${response.statusCode}');
 
       if (response.statusCode == 200) {
-        final responseBody = await response.transform(utf8.decoder).join();
-        final Map<String, dynamic> body = json.decode(responseBody);
-        final List<dynamic> data = body['ResponseArray'];
+        final Map<String, dynamic> responseBody = json.decode(response.body);
+        final List<dynamic> data = responseBody['ResponseArray'];
         return data;
       } else {
-        throw HttpException(
+        throw http.ClientException(
             'Failed to fetch data from $url, Status code: ${response.statusCode}');
       }
     } catch (error) {
       logger.warning('Error: $error');
-      throw HttpException(
-          'Failed to fetch data from $url, Status code: ${error.toString()}');
+      throw http.ClientException(
+          'Failed to fetch data from $url, Error: $error');
     }
   }
 
@@ -53,18 +47,15 @@ class ApiService {
     String uriAuthorization = API_AUTHORIZATION;
 
     try {
-      HttpClient client = HttpClient();
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      HttpClientRequest request = await client.postUrl(Uri.parse(url));
-      request.headers.set('Content-Type', 'application/json');
-      request.headers.set('Authorization', uriAuthorization);
-      request.headers.set('Access-Control-Allow-Origin', '*');
-      request.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-      request.headers
-          .set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-      request.add(utf8.encode(json.encode(userData)));
-      HttpClientResponse response = await request.close();
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': uriAuthorization,
+        },
+        body: jsonEncode(userData),
+      );
+
       if (response.statusCode == 200) {
         logger.warning('User data sent successfully');
       } else {
@@ -74,19 +65,5 @@ class ApiService {
     } catch (error) {
       logger.warning('Error sending user data: $error');
     }
-  }
-}
-
-class HttpOverridesBypassSSL extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    final client = super.createHttpClient(context);
-    client.badCertificateCallback =
-        (X509Certificate cert, String host, int port) {
-      developer.log('Bypassing SSL certificate for $host:$port',
-          name: 'HttpOverridesBypassSSL');
-      return true;
-    };
-    return client;
   }
 }

@@ -4,10 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import './screens/home/home_screen.dart';
 import 'localization/localization_service.dart';
+import 'package:logging/logging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocalizationService localizationService = await LocalizationService.create();
+  Logger.root.onRecord.listen((record) {
+    print('${record.level.name}: ${record.time}: ${record.message}');
+  });
   runApp(
     ChangeNotifierProvider(
       create: (context) => localizationService,
